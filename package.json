@@ -1,0 +1,40 @@
+{
+  "name": "irf",
+  "version": "0.1.0",
+  "keywords": ["incremental", "random", "forest", "machine", "learning", "c++", "native", "sparse", "classifier", "ensemble", "supervised"],
+  "homepage": "https://github.com/pconstr/irf",
+  "description": "incremental random forest ensemble classifier (native)",
+  "main": "irf.node",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pconstr/irf"
+  },
+  "engines": {
+    "node": ">=0.4.0 <0.7.0"
+  },
+  "author": "Carlos Guerreiro <carlos@perceptiveconstructs.com (http://perceptiveconstructs.com)",
+  "dependencies": {},
+  "devDependencies": {"carrier": "0.1.7"},
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "bugs" : { "url" : "https://github.com/pconstr/data-graft.js/issues" },
+  "contributors": [
+    {
+      "name": "Carlos Guerreiro",
+      "email": "carlos@perceptiveconstructs.com",
+      "web": "http://perceptiveconstructs.com"
+    },
+    {
+      "name": "Carlos Guerreiro",
+      "email": "cguerreiro@igalia.com",
+      "web": "http://igalia.com"
+    }
+  ],
+  "scripts": {
+    "test": "cd ./tests && node mushrooms.js"
+  }
+}

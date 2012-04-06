@@ -1,3 +1,7 @@
 *.pyc
 *~
 *#*#
+.lock-wscript
+build
+irf.node
+node_modules
