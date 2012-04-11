@@ -1,4 +1,4 @@
-'Incremental Random Forest
+Incremental Random Forest
 =========================
 
 [![Build Status](https://secure.travis-ci.org/pconstr/irf.png)](http://travis-ci.org/pconstr/irf)
