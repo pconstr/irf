@@ -1,5 +1,7 @@
-Incremental Random Forest
+'Incremental Random Forest
 =========================
+
+[![Build Status](https://secure.travis-ci.org/pconstr/irf.png)](http://travis-ci.org/pconstr/irf)
 
 An implementation in C++ (with [node.js](http://nodejs.org) and Python bindings) of a variant of [Leo Breiman's Random Forests](http://stat-www.berkeley.edu/users/breiman/RandomForests/cc_home.htm)
 
