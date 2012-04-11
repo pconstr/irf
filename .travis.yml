@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - 0.6
+  - 0.7 # development version of 0.8, may be unstable
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install libsparsehash-dev
+  - sudo cp libsparsehash.pc /usr/lib/pkgconfig/
