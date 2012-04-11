@@ -1,6 +1,6 @@
 {
   "name": "irf",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": ["incremental", "random", "forest", "machine", "learning", "c++", "native", "sparse", "classifier", "ensemble", "supervised"],
   "homepage": "https://github.com/pconstr/irf",
   "description": "incremental random forest ensemble classifier (native)",
@@ -21,7 +21,7 @@
       "url": "http://www.opensource.org/licenses/MIT"
     }
   ],
-  "bugs" : { "url" : "https://github.com/pconstr/data-graft.js/issues" },
+  "bugs" : { "url" : "https://github.com/pconstr/irf/issues" },
   "contributors": [
     {
       "name": "Carlos Guerreiro",
