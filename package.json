@@ -4,7 +4,7 @@
   "keywords": ["incremental", "random", "forest", "machine", "learning", "c++", "native", "sparse", "classifier", "ensemble", "supervised"],
   "homepage": "https://github.com/pconstr/irf",
   "description": "incremental random forest ensemble classifier (native)",
-  "main": "irf.node",
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/pconstr/irf"

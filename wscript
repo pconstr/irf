@@ -23,15 +23,4 @@ def build(bld):
 
     obj.target = "irf"
 
-    obj.source = ['irf/MurmurHash3.cpp', 'irf/randomForest.cpp', 'irf/node.cpp'];
-
-def shutdown(): #HACK to get binding.node out of build directory.#better way to do this ?
-    if Options.commands['clean']:
-        if lexists('irf.node'):
-            unlink('irf.node')
-    else:
-        if not lexists('irf.node'):
-            if lexists('./build/Release/irf.node'):
-                symlink('./build/Release/irf.node', 'irf.node')
-            elif lexists('./build/default/default/irf.node'):
-                symlink('./build/default/irf.node', 'irf.node')
+    obj.source = ['irf/MurmurHash3.cpp', 'irf/randomForest.cpp', 'irf/node.cpp']

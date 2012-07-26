@@ -3,7 +3,7 @@
 'use strict';
 
 var fs = require('fs');
-var irf = require('../irf.node');
+var irf = require('../index.js');
 var carrier = require('carrier');
 
 var rf = new irf.IRF(99);
