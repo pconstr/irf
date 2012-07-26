@@ -7,7 +7,7 @@ from os.path import exists, lexists
 
 srcdir = "."
 blddir = "build"
-VERSION = "0.1.1"
+VERSION = "0.1.3"
 
 def set_options(opt):
     opt.tool_options("compiler_cxx")

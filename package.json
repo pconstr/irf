@@ -1,6 +1,6 @@
 {
   "name": "irf",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "keywords": ["incremental", "random", "forest", "machine", "learning", "c++", "native", "sparse", "classifier", "ensemble", "supervised"],
   "homepage": "https://github.com/pconstr/irf",
   "description": "incremental random forest ensemble classifier (native)",
