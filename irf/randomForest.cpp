@@ -1205,6 +1205,46 @@ namespace IncrementalRandomForest {
     }
   }
 
+  void outputDecisionTreeWithStats(TreeState& ts, DecisionTreeNode* dt, ostream& outS) {
+    DecisionTreeInternal* ni;
+    DecisionTreeLeaf* nl;
+
+    outS << "{";
+
+
+    if(dt->checkType(&ni, &nl)) {
+      outS << "\"value\":" << nl->value;
+    } else {
+      outS << "\"split\":" << dt->code;
+      outS << ",\"neg\":";
+      outputDecisionTreeWithStats(ts, ni->negative, outS);
+      outS << ",\"pos\":";
+      outputDecisionTreeWithStats(ts, ni->positive, outS);
+    }
+
+    outS << ",\"c0\":" << dt->c0;
+    outS << ",\"c1\":" << dt->c1;
+
+    outS << ",\"counts\":{";
+    sparse_hash_map<int, DecisionCounts>::const_iterator mapIt;
+    for(mapIt = dt->decisionCountMap.begin();
+        mapIt != dt->decisionCountMap.end();
+        ++mapIt) {
+      const int code = mapIt->first;
+      if(mapIt != dt->decisionCountMap.begin())
+        outS << ",";
+      outS << "\"" << code << "\":{";
+      const DecisionCounts& dc = mapIt->second;
+      outS << "\"c0p\":" << dc.c0p;
+      outS << ",\"c1p\":" << dc.c1p;
+      outS << ",\"rank\":" << dc.rank;
+      outS << "}";
+    }
+    outS << "}";
+
+    outS << "}";
+  }
+
   static void loadRandomForest(TreeState& ts, istream& forestS, vector<DecisionTreeNode*>& forest, map<string, Sample*>& samples) {
     forestS >> ts.seed;
     int nTrees;
@@ -1417,6 +1457,19 @@ namespace IncrementalRandomForest {
       outS << "]";
     }
 
+    void statsJSON(ostream& outS) {
+      commit();
+      outS << "[";
+      for(vector<DecisionTreeNode*>::iterator itTree = forest.begin();
+          itTree != forest.end();
+          ++itTree) {
+        if(itTree != forest.begin())
+          outS << ",";
+        outputDecisionTreeWithStats(ts, *itTree, outS);
+      }
+      outS << "]";
+    }
+
     bool save(ostream& outS) {
       commit();
       outS << ts.seed << endl;
@@ -1504,6 +1557,10 @@ namespace IncrementalRandomForest {
 
   void asJSON(Forest* rf, ostream& outS) {
     rf->asJSON(outS);
+  }
+
+  void statsJSON(Forest* rf, ostream& outS) {
+    rf->statsJSON(outS);
   }
 
   bool add(Forest* rf, Sample* s) {

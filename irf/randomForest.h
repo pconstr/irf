@@ -41,6 +41,7 @@ namespace IncrementalRandomForest {
   Forest* load(std::istream& forestS);
   bool save(Forest* rf, std::ostream& outS);
   void asJSON(Forest* rf, std::ostream& outS);
+  void statsJSON(Forest* rf, std::ostream& outS);
   bool add(Forest* rf, Sample* s);
   bool remove(Forest* rf, const char* sId);
   void commit(Forest* rf);

@@ -65,6 +65,7 @@ public:
     NODE_SET_PROTOTYPE_METHOD(ct, "classify", classify);
     NODE_SET_PROTOTYPE_METHOD(ct, "classifyPartial", classifyPartial);
     NODE_SET_PROTOTYPE_METHOD(ct, "asJSON", asJSON);
+    NODE_SET_PROTOTYPE_METHOD(ct, "statsJSON", statsJSON);
     NODE_SET_PROTOTYPE_METHOD(ct, "each", each);
     NODE_SET_PROTOTYPE_METHOD(ct, "commit", commit);
     NODE_SET_PROTOTYPE_METHOD(ct, "toBuffer", toBuffer);
@@ -214,6 +215,22 @@ public:
 
     stringstream ss;
     IncrementalRandomForest::asJSON(ih->f, ss);
+    ss.flush();
+
+    return scope.Close(String::New(ss.str().c_str()));
+  }
+
+  static Handle<Value> statsJSON(const Arguments& args) {
+    HandleScope scope;
+
+    if(args.Length() != 0) {
+      return ThrowException(Exception::Error(String::New("statsJSON takes 0 arguments")));
+    }
+
+    IRF* ih = ObjectWrap::Unwrap<IRF>(args.This());
+
+    stringstream ss;
+    IncrementalRandomForest::statsJSON(ih->f, ss);
     ss.flush();
 
     return scope.Close(String::New(ss.str().c_str()));

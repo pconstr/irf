@@ -99,6 +99,13 @@ static PyObject* IRF_asJSON(IRF* self) {
   return Py_BuildValue("s", ss.str().c_str());
 }
 
+static PyObject* IRF_statsJSON(IRF* self) {
+  stringstream ss;
+  statsJSON(self->forest, ss);
+  ss.flush();
+  return Py_BuildValue("s", ss.str().c_str());
+}
+
 static PyObject* IRF_save(IRF* self, PyObject* args) {
   char* fname;
 
@@ -212,6 +219,9 @@ static PyMethodDef IRF_methods[] = {
   },
   {"asJSON", (PyCFunction)IRF_asJSON, METH_NOARGS,
    "Encode as JSON"
+  },
+  {"statsJSON", (PyCFunction)IRF_statsJSON, METH_NOARGS,
+   "Encode stats as JSON"
   },
   {"save", (PyCFunction)IRF_save, METH_VARARGS,
    "Save forest to file"
