@@ -63,6 +63,7 @@ public:
     NODE_SET_PROTOTYPE_METHOD(ct, "add", add);
     NODE_SET_PROTOTYPE_METHOD(ct, "remove", remove);
     NODE_SET_PROTOTYPE_METHOD(ct, "classify", classify);
+    NODE_SET_PROTOTYPE_METHOD(ct, "classifyPartial", classifyPartial);
     NODE_SET_PROTOTYPE_METHOD(ct, "asJSON", asJSON);
     NODE_SET_PROTOTYPE_METHOD(ct, "each", each);
     NODE_SET_PROTOTYPE_METHOD(ct, "commit", commit);
@@ -176,6 +177,30 @@ public:
     setFeatures(&s, features);
 
     return scope.Close(Number::New(IncrementalRandomForest::classify(ih->f, &s)));
+  }
+
+  static Handle<Value> classifyPartial(const Arguments& args) {
+    HandleScope scope;
+
+    if(args.Length() != 2) {
+      return ThrowException(Exception::Error(String::New("classifyPartial takes 2 argument")));
+    }
+
+    if(!args[0]->IsObject())
+      return ThrowException(Exception::Error(String::New("argument 1 must be a object")));
+    Local<Object> features = *args[0]->ToObject();
+
+
+    if(!args[1]->IsNumber())
+      return ThrowException(Exception::Error(String::New("argument 2 must be a number")));
+    Local<Number> nTrees = *args[1]->ToNumber();
+
+    IRF* ih = ObjectWrap::Unwrap<IRF>(args.This());
+
+    IncrementalRandomForest::Sample s;
+    setFeatures(&s, features);
+
+    return scope.Close(Number::New(IncrementalRandomForest::classifyPartial(ih->f, &s, nTrees->Value())));
   }
 
   static Handle<Value> asJSON(const Arguments& args) {

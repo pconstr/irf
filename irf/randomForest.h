@@ -45,6 +45,7 @@ namespace IncrementalRandomForest {
   bool remove(Forest* rf, const char* sId);
   void commit(Forest* rf);
   float classify(Forest* rf, Sample* s);
+  float classifyPartial(Forest* rf, Sample* s, int n);
   bool validate(Forest* rf);
   SampleWalker* getSamples(Forest* rf);
 }

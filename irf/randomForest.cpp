@@ -1455,6 +1455,19 @@ namespace IncrementalRandomForest {
       return v / forest.size();
     }
 
+    float classifyPartial(Sample* s, int n) {
+      commit();
+      double v = 0;
+      vector<DecisionTreeNode*>::iterator itStop = forest.begin() + n;
+      for(vector<DecisionTreeNode*>::iterator itTree = forest.begin();
+          itTree != itStop;
+          ++itTree) {
+        double dv = evaluateSampleAgainstDecisionTree(ts, s, *itTree);
+        v += dv;
+      }
+      return v / n;
+    }
+
     bool validate(void) {
       for(vector<DecisionTreeNode*>::iterator itTree = forest.begin();
           itTree != forest.end();
@@ -1507,6 +1520,10 @@ namespace IncrementalRandomForest {
 
   float classify(Forest* rf, Sample* s) {
     return rf->classify(s);
+  }
+
+  float classifyPartial(Forest* rf, Sample* s, int n) {
+    return rf->classifyPartial(s, n);
   }
 
   bool validate(Forest* rf) {

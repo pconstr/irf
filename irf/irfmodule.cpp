@@ -156,6 +156,20 @@ static PyObject* IRF_classify(IRF* self, PyObject* args) {
   return Py_BuildValue("f", classify(self->forest, &s));
 }
 
+static PyObject* IRF_classifyPartial(IRF* self, PyObject* args) {
+  PyObject* features;
+  int nTrees;
+  if(!PyArg_ParseTuple(args, "Oi",
+                       &features,
+                       &nTrees))
+    return 0;
+
+  Sample s;
+  extractFeatures(features, &s);
+
+  return Py_BuildValue("f", classifyPartial(self->forest, &s, nTrees));
+}
+
 static PyObject* IRF_remove(IRF* self, PyObject* args) {
   char* sampleId;
   if(!PyArg_ParseTuple(args, "s",
@@ -207,6 +221,9 @@ static PyMethodDef IRF_methods[] = {
   },
   {"classify", (PyCFunction)IRF_classify, METH_VARARGS,
    "Classify according to features"
+  },
+  {"classifyPartial", (PyCFunction)IRF_classifyPartial, METH_VARARGS,
+   "Classify according to features, using only N trees"
   },
   {"add", (PyCFunction)IRF_add, METH_VARARGS,
    "Add a sample"
