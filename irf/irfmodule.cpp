@@ -1,4 +1,4 @@
-/* Copyright 2010-2011 Carlos Guerreiro 
+/* Copyright 2010-2011 Carlos Guerreiro
  * Licensed under the MIT license */
 
 #include <Python.h>
@@ -39,24 +39,24 @@ static void IRF_dealloc(IRF* self) {
 
 static PyObject* IRF_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   IRF *self;
-  
+
   PyObject* firstArg = PyTuple_GetItem(args, 0);
-  
+
   bool fromFile = firstArg && PyString_Check(firstArg);
-  
+
   char* fname;
-  
+
   if(fromFile) {
     if(!PyArg_ParseTuple(args, "s",
-			 &fname))
+                         &fname))
       return 0;
-    
+
     ifstream inF(fname);
     if(!inF.is_open()) {
       // FIXME: raise exception?
       return 0;
     }
-    
+
     self = new (type->tp_alloc(type, 0)) IRF();
     if(self) {
       self->forest = load(inF);
@@ -65,13 +65,13 @@ static PyObject* IRF_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
     int nTrees;
     if(!PyArg_ParseTuple(args, "i", &nTrees))
       return 0;
-    
+
     self = new (type->tp_alloc(type, 0)) IRF();
     if(self) {
       self->forest = create(nTrees);
     }
   }
-  
+
   return (PyObject *)self;
 }
 
@@ -101,16 +101,16 @@ static PyObject* IRF_asJSON(IRF* self) {
 
 static PyObject* IRF_save(IRF* self, PyObject* args) {
   char* fname;
-  
+
   if(!PyArg_ParseTuple(args, "s",
-		       &fname)) {
+                       &fname)) {
     return 0;
   }
-  
+
   ofstream outS(fname);
   if(!outS.is_open())
     return PyBool_FromLong(false);
-  
+
   return PyBool_FromLong(save(self->forest, outS));
 }
 
@@ -146,20 +146,20 @@ static bool extractFeatures(PyObject* features, Sample* s) {
 static PyObject* IRF_classify(IRF* self, PyObject* args) {
   PyObject* features;
   if(!PyArg_ParseTuple(args, "O",
-		       &features
-		       ))
+                       &features
+                       ))
     return 0;
-  
+
   Sample s;
   extractFeatures(features, &s);
-  
+
   return Py_BuildValue("f", classify(self->forest, &s));
 }
 
 static PyObject* IRF_remove(IRF* self, PyObject* args) {
   char* sampleId;
   if(!PyArg_ParseTuple(args, "s",
-		       &sampleId))
+                       &sampleId))
     return 0;
   return PyBool_FromLong(remove(self->forest, sampleId));
 }
@@ -168,25 +168,25 @@ static PyObject* IRF_add(IRF* self, PyObject* args) {
   char* sampleId;
   PyObject* features;
   float target;
-  
+
   if(!PyArg_ParseTuple(args, "sOf",
-		       &sampleId,
-		       &features,
-		       &target)) {
+                       &sampleId,
+                       &features,
+                       &target)) {
     return 0;
   }
-  
+
   Sample* s = new Sample();
-  
+
   s->suid = sampleId;
   s->y = target;
-  
+
   if(!extractFeatures(features, s)) {
     cerr << "failed to extract features!" << endl;
     delete s;
     return 0;
   }
-  
+
   return PyBool_FromLong(add(self->forest, s));
 }
 
@@ -209,7 +209,7 @@ static PyMethodDef IRF_methods[] = {
    "Classify according to features"
   },
   {"add", (PyCFunction)IRF_add, METH_VARARGS,
-     "Add a sample"
+   "Add a sample"
   },
   {"remove", (PyCFunction)IRF_remove, METH_VARARGS,
    "Remove a sample"
@@ -225,7 +225,7 @@ static PyTypeObject IRFType = {
   0,                         /*ob_size*/
   "irf.IRF",             /*tp_name*/
   sizeof(IRF), /*tp_basicsize*/
-    0,                         /*tp_itemsize*/
+  0,                         /*tp_itemsize*/
   (destructor)IRF_dealloc,   /*tp_dealloc*/
   0,                         /*tp_print*/
   0,                         /*tp_getattr*/
@@ -243,12 +243,12 @@ static PyTypeObject IRFType = {
   0,                         /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT,        /*tp_flags*/
   "IRF objects",           /* tp_doc */
-  0,		               /* tp_traverse */
-    0,		               /* tp_clear */
-  0,		               /* tp_richcompare */
-  0,		               /* tp_weaklistoffset */
-  0,		               /* tp_iter */
-  0,		               /* tp_iternext */
+  0,                   /* tp_traverse */
+  0,                   /* tp_clear */
+  0,                   /* tp_richcompare */
+  0,                   /* tp_weaklistoffset */
+  0,                   /* tp_iter */
+  0,                   /* tp_iternext */
   IRF_methods,             /* tp_methods */
   IRF_members,             /* tp_members */
   0,                         /* tp_getset */
@@ -265,20 +265,20 @@ static PyTypeObject IRFType = {
 struct SampleIter {
   PyObject_HEAD
   SampleWalker* walker;
-  
+
   void setRange(SampleWalker* w) {
     delete walker;
     walker = w;
   }
-  
+
   SampleIter(SampleWalker* w) {
     walker = w;
   }
-  
+
   SampleIter(void) {
     walker = 0;
   }
-  
+
   ~SampleIter(void) {
     delete walker;
   }
@@ -291,7 +291,7 @@ static void SampleIter_dealloc(SampleIter* self) {
 
 static PyObject* SampleIter_new(PyTypeObject *type, PyObject *ars, PyObject *kwds) {
   SampleIter* self;
-  
+
   self = new (type->tp_alloc(type, 0)) SampleIter();
   if( self != NULL) {
   }
@@ -365,16 +365,16 @@ static PyTypeObject SampleIterType = {
 
 static PyObject* IRF_load(PyObject* self, PyObject* args) {
   IRF* p;
-  
+
   char* fname;
   if(!PyArg_ParseTuple(args, "s",
-		       &fname))
+                       &fname))
     return 0;
-  
+
   p = (IRF*) PyObject_CallObject((PyObject*) &IRFType, args);
-  
+
   if (!p) return NULL;
-  
+
   return (PyObject*) p;
 }
 
@@ -387,39 +387,39 @@ static PyMethodDef module_methods[] = {
 
 static PyObject* IRF_samples(IRF* self, PyObject* args) {
   SampleIter *p;
-  
+
   PyObject *argList = Py_BuildValue("()");
   p = (SampleIter*) PyObject_CallObject((PyObject*) &SampleIterType, argList);
   Py_DECREF(argList);
-  
+
   if (!p) return NULL;
-  
+
   /* I'm not sure if it's strictly necessary. */
   if (!PyObject_Init((PyObject *)p, &SampleIterType)) {
     Py_DECREF(p);
     return NULL;
   }
-  
+
   p->setRange(getSamples(self->forest));
-  
+
   return (PyObject *)p;
 }
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
+#ifndef PyMODINIT_FUNC  /* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC initirf(void) {
-    PyObject* m;
-    
-    if (PyType_Ready(&IRFType) < 0)
-      return;
-    if (PyType_Ready(&SampleIterType) < 0)
-      return;
-    
-    m = Py_InitModule3("irf", module_methods,
-                       "Incremental Random Forest.");
-    
-    Py_INCREF(&IRFType);
-    PyModule_AddObject(m, "IRF", (PyObject *)&IRFType);
-    PyModule_AddObject(m, "SampleIter", (PyObject *)&SampleIterType);
+  PyObject* m;
+
+  if (PyType_Ready(&IRFType) < 0)
+    return;
+  if (PyType_Ready(&SampleIterType) < 0)
+    return;
+
+  m = Py_InitModule3("irf", module_methods,
+                     "Incremental Random Forest.");
+
+  Py_INCREF(&IRFType);
+  PyModule_AddObject(m, "IRF", (PyObject *)&IRFType);
+  PyModule_AddObject(m, "SampleIter", (PyObject *)&SampleIterType);
 }
