@@ -35,7 +35,7 @@ namespace IncrementalRandomForest {
   };
 
   class Forest;
-  
+
   Forest* create(int nTrees);
   void destroy(Forest* rf);
   Forest* load(std::istream& forestS);
